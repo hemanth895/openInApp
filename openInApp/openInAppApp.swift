@@ -7,14 +7,36 @@
 
 import SwiftUI
 
+
+
+
+
 @main
 struct openInAppApp: App {
-    let persistenceController = PersistenceController.shared
 
+    @State var apiResponseHolder = ApiResponseHolder()
+
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .task {
+                    ApiCalls.shared.makeAPICall { apiResponse, error in
+                        
+                        
+                        DispatchQueue.main.async {
+                                                   if let error = error {
+                                                       print("Error: \(error.localizedDescription)")
+                                                   } else if let apiResponse = apiResponse {
+                                                       print("API Response: \(apiResponse)")
+                                                       apiResponseHolder.response = apiResponse
+                                                   }
+                                               }
+                    }
+                    
+                }
+                .environmentObject(apiResponseHolder) // Pass ApiResponseHolder as environment object
+
         }
     }
 }
