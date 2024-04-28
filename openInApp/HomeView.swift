@@ -29,6 +29,8 @@ struct HomeView: View {
                 ScrollView {
                     LinksView()
                 }
+                
+                //asjhdjashdjash
                 .cornerRadius(20)
                 .edgesIgnoringSafeArea(.top)
                 .scrollIndicators(.never)
